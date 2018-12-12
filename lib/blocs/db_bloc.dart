@@ -4,14 +4,14 @@ import 'package:firestore_db_editor/state/app_state.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
-class DbBloc extends Bloc<dynamic, AppState> {
+class DbBloc extends Bloc<dynamic, DbState> {
   DbBloc();
 
   @override
-  get initialState => AppState.initialState();
+  get initialState => DbState(currentCollection: "", currentDirSnapshot: null);
 
   @override
-  Stream<AppState> mapEventToState(AppState state, event) async* {
+  Stream<DbState> mapEventToState(DbState state, event) async* {
     if (event is GetDocumentsFromCollection) {
       QuerySnapshot documents =
           await Firestore.instance.collection(event.path).getDocuments();
@@ -33,7 +33,6 @@ class GetDocumentsFromCollection {
 
   GetDocumentsFromCollection(this.path);
 }
-
 
 class DBState {
   final int writeCount;

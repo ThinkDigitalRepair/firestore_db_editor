@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firestore_db_editor/directory_page_view.dart';
 import 'package:firestore_db_editor/state/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,29 +41,22 @@ class HomePage extends StatelessWidget {
                   controller: collectionTextEditingController,
                 ),
                 trailing: FlatButton(
-                    onPressed: () => dbBloc.dispatch(
-                        GetDocumentsFromCollection(
-                            collectionTextEditingController.text)),
+                    onPressed: () => dbBloc.dispatch(GetDocumentsFromCollection(
+                        collectionTextEditingController.text)),
                     child: Text("Query")),
               ),
               Expanded(
-                child: StreamBuilder<AppState>(
+                child: StreamBuilder<DbState>(
                   stream: dbBloc.state,
                   builder:
-                      (BuildContext context, AsyncSnapshot<AppState> snapshot) {
+                      (BuildContext context, AsyncSnapshot<DbState> snapshot) {
                     if (snapshot.hasData &&
                         snapshot.data.currentDirSnapshot != null) {
                       List<DocumentSnapshot> documentList =
                           snapshot.data.currentDirSnapshot.documents;
-                      return ListView.builder(
-                          itemCount: documentList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            DocumentSnapshot document = documentList[index];
-                            return ListTile(
-                              title: Text("Data for ${document.documentID}"),
-                              subtitle: Text(document.data.toString()),
-                            );
-                          });
+                      return DirectoryPageView(
+                        stuff: documentList,
+                      );
                     } else
                       return Center(child: Text("No Data"));
                   },

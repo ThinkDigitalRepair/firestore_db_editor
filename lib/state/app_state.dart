@@ -1,22 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AppState {
+class DbState {
   final String currentCollection;
   final QuerySnapshot currentDirSnapshot;
 
+  DbState({this.currentCollection, this.currentDirSnapshot});
 
-  AppState({this.currentCollection, this.currentDirSnapshot});
+  factory DbState.initialState() =>
+      DbState(currentCollection: "", currentDirSnapshot: null);
 
-  factory AppState.initialState() =>
-      AppState(currentCollection: "", currentDirSnapshot: null);
-
-  AppState copyWith({String currentPath, QuerySnapshot currentDirSnapshot}) =>
-      AppState(
+  DbState copyWith({String currentPath, QuerySnapshot currentDirSnapshot}) =>
+      DbState(
           currentCollection: currentPath ?? this.currentCollection,
           currentDirSnapshot: currentDirSnapshot ?? this.currentDirSnapshot);
 
   @override
-  String toString() =>
-      "currentCollection: $currentCollection\n"
-          "curentDirSnapshot: $currentDirSnapshot";
+  String toString() => "currentCollection: $currentCollection\n"
+      "curentDirSnapshot: $currentDirSnapshot";
 }
